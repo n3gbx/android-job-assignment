@@ -38,6 +38,13 @@ class MainActivity : AppCompatActivity() {
 @Composable
 fun NavGraph(navController: NavHostController) {
     NavHost(navController, startDestination = "meals") {
-        composable("meals") { MealsScreen(hiltViewModel()) }
+        composable("meals") {
+            MealsScreen(
+                viewModel = hiltViewModel(),
+                onMealClick = { mealId ->
+                    navController.navigate("mealDetails/$mealId")
+                }
+            )
+        }
     }
 }
