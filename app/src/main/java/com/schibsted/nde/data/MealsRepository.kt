@@ -2,7 +2,9 @@ package com.schibsted.nde.data
 
 import com.schibsted.nde.api.BackendApi
 import com.schibsted.nde.data.common.ModelEntityMapper.mapToEntities
+import com.schibsted.nde.data.common.ModelEntityMapper.mapToModel
 import com.schibsted.nde.data.common.ModelEntityMapper.mapToModels
+import com.schibsted.nde.data.common.ModelEntityMapper.mapToEntity
 import com.schibsted.nde.data.common.NetworkBoundResource
 import com.schibsted.nde.database.MealEntityDao
 import com.schibsted.nde.model.MealResponse
@@ -27,11 +29,28 @@ class MealsRepository @Inject constructor(
             fetch = {
                 backendApi.getMeals()
             },
-            saveFetched = { mealsResponse ->
-                mealDao.insertAll(mealsResponse.mapToEntities())
+            saveFetched = { remoteMeals ->
+                mealDao.insertAll(remoteMeals.mapToEntities())
             },
-            shouldFetch = { localData ->
-                localData.isNullOrEmpty() || shouldRefresh
+            shouldFetch = { localMeals ->
+                localMeals.isNullOrEmpty() || shouldRefresh
+            }
+        )
+    }
+
+    fun getMeal(id: String): Flow<Result<MealResponse>> {
+        return networkBoundResource(
+            query = {
+                mealDao.getById(id).map { it.mapToModel() }
+            },
+            fetch = {
+                backendApi.getMeal(id).meals.first()
+            },
+            saveFetched = { remoteMeal ->
+                mealDao.insert(remoteMeal.mapToEntity())
+            },
+            shouldFetch = { localMeal ->
+                localMeal == null
             }
         )
     }

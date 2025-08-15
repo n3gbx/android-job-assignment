@@ -13,4 +13,10 @@ interface MealEntityDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAll(meals: List<MealEntity>)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insert(meal: MealEntity)
+
+    @Query("SELECT * FROM meal WHERE id = :id")
+    fun getById(id: String): Flow<MealEntity>
 }
