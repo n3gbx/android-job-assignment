@@ -91,7 +91,7 @@ fun MealsScreen(viewModel: MealsViewModel) {
                 singleLine = true,
                 keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
                 keyboardActions = KeyboardActions(onSearch = {
-                    viewModel.submitQuery(query)
+                    viewModel.onQuery(query)
                     coroutineScope.launch {
                         modalBottomSheetState.hide()
                     }
@@ -102,7 +102,7 @@ fun MealsScreen(viewModel: MealsViewModel) {
 
             Row(modifier = Modifier.align(Alignment.End)) {
                 OutlinedButton(onClick = {
-                    viewModel.submitQuery(null)
+                    viewModel.onQuery(null)
                     query = ""
                     coroutineScope.launch {
                         modalBottomSheetState.hide()
@@ -112,7 +112,7 @@ fun MealsScreen(viewModel: MealsViewModel) {
                 }
                 Spacer(modifier = Modifier.width(16.dp))
                 Button(onClick = {
-                    viewModel.submitQuery(query)
+                    viewModel.onQuery(query)
                     coroutineScope.launch {
                         modalBottomSheetState.hide()
                     }
@@ -155,7 +155,7 @@ fun MealsScreenContent(viewModel: MealsViewModel) {
         Column {
             SwipeRefresh(
                 state = rememberSwipeRefreshState(state.isLoading),
-                onRefresh = { viewModel.loadMeals() },
+                onRefresh = { viewModel.onRefresh() },
                 indicator = { state, trigger -> SwipeRefreshIndicator(state, trigger) },
                 modifier = Modifier
                     .align(Alignment.CenterHorizontally)
