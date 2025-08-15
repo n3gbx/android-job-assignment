@@ -15,6 +15,7 @@ import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -45,7 +46,9 @@ class MealsViewModel @Inject constructor(
     )
 
     fun onRefresh() {
-        refreshTriggerFlow.tryEmit(true)
+        viewModelScope.launch {
+            refreshTriggerFlow.emit(true)
+        }
     }
 
     fun onQuery(query: String?) {
