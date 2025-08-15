@@ -5,6 +5,8 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
@@ -26,6 +28,7 @@ fun MealDetailsScreen(
     onBack: () -> Unit
 ) {
     val state by viewModel.state.collectAsState()
+    val scrollState = rememberScrollState()
 
     Scaffold(
         topBar = {
@@ -48,6 +51,7 @@ fun MealDetailsScreen(
     ) { padding ->
         Column(
             modifier = Modifier
+                .verticalScroll(scrollState)
                 .padding(padding)
                 .padding(
                     horizontal = 24.dp,
