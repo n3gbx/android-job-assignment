@@ -30,8 +30,7 @@ class MealDetailsViewModel @Inject constructor(
 
     private fun Result<MealResponse>.mapToViewState() =
         when (this) {
-            is Result.Success -> MealDetailsViewState(meal = data)
-            is Result.Error -> MealDetailsViewState(errorMessage = "Error while retrieving meal data")
+            is Result.Success -> MealDetailsViewState(data)
             else -> MealDetailsViewState()
         }
 }
