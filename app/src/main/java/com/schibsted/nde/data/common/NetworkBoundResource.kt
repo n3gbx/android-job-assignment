@@ -8,7 +8,9 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
+import javax.inject.Singleton
 
+@Singleton
 class NetworkBoundResource @Inject constructor() {
 
     inline operator fun <QueryResult, FetchResult> invoke(
