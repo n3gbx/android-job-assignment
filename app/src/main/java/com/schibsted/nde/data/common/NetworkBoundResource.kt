@@ -3,6 +3,7 @@ package com.schibsted.nde.data.common
 import com.schibsted.nde.model.Result
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emitAll
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
@@ -14,10 +15,12 @@ class NetworkBoundResource @Inject constructor() {
         crossinline query: () -> Flow<QueryResult>,
         crossinline fetch: suspend () -> FetchResult,
         crossinline saveFetched: suspend (FetchResult) -> Unit,
-        shouldFetch: Boolean
+        crossinline shouldFetch: (currentData: QueryResult?) -> Boolean
     ): Flow<Result<QueryResult>> = flow {
         val flow: Flow<Result<QueryResult>> = runCatching {
-            if (shouldFetch) {
+            val currentData = query().firstOrNull()
+
+            if (shouldFetch(currentData)) {
                 emit(Result.Loading())
                 saveFetched(fetch())
             }

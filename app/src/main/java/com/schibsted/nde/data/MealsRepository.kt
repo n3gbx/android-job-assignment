@@ -30,7 +30,9 @@ class MealsRepository @Inject constructor(
             saveFetched = { mealsResponse ->
                 mealDao.insertAll(mealsResponse.mapToEntities())
             },
-            shouldFetch = shouldRefresh
+            shouldFetch = { localData ->
+                localData.isNullOrEmpty() || shouldRefresh
+            }
         )
     }
 }
