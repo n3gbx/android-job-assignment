@@ -1,4 +1,4 @@
-package com.schibsted.nde.data
+package com.schibsted.nde.data.common
 
 import com.schibsted.nde.model.Result
 import kotlinx.coroutines.flow.Flow
