@@ -2,11 +2,9 @@ package com.schibsted.nde.data.common
 
 import com.schibsted.nde.database.MealEntity
 import com.schibsted.nde.model.MealResponse
-import javax.inject.Inject
-import javax.inject.Singleton
+import com.schibsted.nde.model.MealsResponse
 
-@Singleton
-class ModelEntityMapper @Inject constructor() {
+object ModelEntityMapper {
 
     fun MealEntity.mapToModel() =
         MealResponse(
@@ -27,4 +25,9 @@ class ModelEntityMapper @Inject constructor() {
             imageUrl = strMealThumb,
             youtubeUrl = strYoutube,
         )
+
+
+    fun MealsResponse.mapToEntities() = meals.map { it.mapToEntity() }
+
+    fun List<MealEntity>.mapToModels() = map { it.mapToModel() }
 }
